@@ -2,7 +2,7 @@ package com.pragbits.stash.tools;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SlackAttachment {
+public class BearyChatAttachment {
 
     private String[] mrkdwn_in = new String[]{
             "pretext",
@@ -36,8 +36,8 @@ public class SlackAttachment {
         this.color = color;
     }
 
-    public void addField(SlackAttachmentField slackAttachmentField) {
-        this.fields.add(slackAttachmentField);
+    public void addField(BearyChatAttachmentField bearychatAttachmentField) {
+        this.fields.add(bearychatAttachmentField);
     }
 
     public void removeField(int index) {
@@ -45,7 +45,7 @@ public class SlackAttachment {
     }
 
 
-    private List<SlackAttachmentField> fields = new LinkedList<SlackAttachmentField>();
+    private List<BearyChatAttachmentField> fields = new LinkedList<BearyChatAttachmentField>();
 
     public String getTitle() {
         return title;

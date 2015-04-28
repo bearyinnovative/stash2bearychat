@@ -14,9 +14,9 @@ import com.atlassian.stash.util.PageRequest;
 import com.atlassian.stash.util.PageUtils;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
-import com.pragbits.stash.SlackGlobalSettingsService;
-import com.pragbits.stash.SlackSettings;
-import com.pragbits.stash.SlackSettingsService;
+import com.pragbits.stash.BearyChatGlobalSettingsService;
+import com.pragbits.stash.BearyChatSettings;
+import com.pragbits.stash.BearyChatSettingsService;
 import com.pragbits.stash.tools.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,37 +25,37 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class RepositoryPushActivityListener {
-    static final String KEY_GLOBAL_SETTING_HOOK_URL = "stash2slack.globalsettings.hookurl";
+    static final String KEY_GLOBAL_SETTING_HOOK_URL = "stash2bearychat.globalsettings.hookurl";
     private static final Logger log = LoggerFactory.getLogger(RepositoryPushActivityListener.class);
 
-    private final SlackGlobalSettingsService slackGlobalSettingsService;
-    private final SlackSettingsService slackSettingsService;
+    private final BearyChatGlobalSettingsService bearychatGlobalSettingsService;
+    private final BearyChatSettingsService bearychatSettingsService;
     private final CommitService commitService;
     private final NavBuilder navBuilder;
-    private final SlackNotifier slackNotifier;
+    private final BearyChatNotifier bearychatNotifier;
     private final Gson gson = new Gson();
 
-    public RepositoryPushActivityListener(SlackGlobalSettingsService slackGlobalSettingsService,
-                                          SlackSettingsService slackSettingsService,
+    public RepositoryPushActivityListener(BearyChatGlobalSettingsService bearychatGlobalSettingsService,
+                                          BearyChatSettingsService bearychatSettingsService,
                                           CommitService commitService,
                                           NavBuilder navBuilder,
-                                          SlackNotifier slackNotifier) {
-        this.slackGlobalSettingsService = slackGlobalSettingsService;
-        this.slackSettingsService = slackSettingsService;
+                                          BearyChatNotifier bearychatNotifier) {
+        this.bearychatGlobalSettingsService = bearychatGlobalSettingsService;
+        this.bearychatSettingsService = bearychatSettingsService;
         this.commitService = commitService;
         this.navBuilder = navBuilder;
-        this.slackNotifier = slackNotifier;
+        this.bearychatNotifier = bearychatNotifier;
     }
 
     @EventListener
-    public void NotifySlackChannel(RepositoryPushEvent event) {
+    public void NotifyBearyChatChannel(RepositoryPushEvent event) {
         // find out if notification is enabled for this repo
         Repository repository = event.getRepository();
-        SlackSettings slackSettings = slackSettingsService.getSlackSettings(repository);
-        String globalHookUrl = slackGlobalSettingsService.getWebHookUrl(KEY_GLOBAL_SETTING_HOOK_URL);
+        BearyChatSettings bearychatSettings = bearychatSettingsService.getBearyChatSettings(repository);
+        String globalHookUrl = bearychatGlobalSettingsService.getWebHookUrl(KEY_GLOBAL_SETTING_HOOK_URL);
 
-        if (slackSettings.isSlackNotificationsEnabledForPush()) {
-            String localHookUrl = slackSettings.getSlackWebHookUrl();
+        if (bearychatSettings.isBearyChatNotificationsEnabledForPush()) {
+            String localHookUrl = bearychatSettings.getBearyChatWebHookUrl();
             WebHookSelector hookSelector = new WebHookSelector(globalHookUrl, localHookUrl);
 
             if (!hookSelector.isHookValid()) {
@@ -67,9 +67,9 @@ public class RepositoryPushActivityListener {
             String projectName = repository.getProject().getKey();
 
             for (RefChange refChange : event.getRefChanges()) {
-                SlackPayload payload = new SlackPayload();
-                if (!slackSettings.getSlackChannelName().isEmpty()) {
-                    payload.setChannel(slackSettings.getSlackChannelName());
+                BearyChatPayload payload = new BearyChatPayload();
+                if (!bearychatSettings.getBearyChatChannelName().isEmpty()) {
+                    payload.setChannel(bearychatSettings.getBearyChatChannelName());
                 }
 
 
@@ -79,7 +79,7 @@ public class RepositoryPushActivityListener {
                         .commits()
                         .buildAbsolute();
 
-                String text = String.format("Push on `%s` by `%s <%s>`. See <%s|commit list>.",
+                String text = String.format("Push on `%s` by `%s <%s>`. See [commit list](%s).",
                         event.getRepository().getName(),
                         event.getUser() != null ? event.getUser().getDisplayName() : "unknown user",
                         event.getUser() != null ? event.getUser().getEmailAddress() : "unknown email",
@@ -115,10 +115,10 @@ public class RepositoryPushActivityListener {
                 }
 
                 for (Changeset ch : myChanges) {
-                    SlackAttachment attachment = new SlackAttachment();
-                    attachment.setFallback(text);
+                    BearyChatAttachment attachment = new BearyChatAttachment();
+                    //attachment.setFallback(text);
                     attachment.setColor("#aabbcc");
-                    SlackAttachmentField field = new SlackAttachmentField();
+                    BearyChatAttachmentField field = new BearyChatAttachmentField();
 
                     attachment.setTitle(String.format("[%s:%s] - %s", event.getRepository().getName(), refChange.getRefId(), ch.getId()));
                     attachment.setTitle_link(url.concat(String.format("/%s", ch.getId())));
@@ -129,7 +129,7 @@ public class RepositoryPushActivityListener {
                     payload.addAttachment(attachment);
                 }
 
-                slackNotifier.SendSlackNotification(hookSelector.getSelectedHook(), gson.toJson(payload));
+                bearychatNotifier.SendBearyChatNotification(hookSelector.getSelectedHook(), gson.toJson(payload));
             }
 
         }

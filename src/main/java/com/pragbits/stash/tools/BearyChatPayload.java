@@ -3,7 +3,7 @@ package com.pragbits.stash.tools;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SlackPayload {
+public class BearyChatPayload {
 
     public String getChannel() {
         return channel;
@@ -35,10 +35,10 @@ public class SlackPayload {
 
     private boolean mrkdwn;
 
-    private List<SlackAttachment> attachments = new LinkedList<SlackAttachment>();
+    private List<BearyChatAttachment> attachments = new LinkedList<BearyChatAttachment>();
 
-    public void addAttachment(SlackAttachment slackAttachment) {
-        this.attachments.add(slackAttachment);
+    public void addAttachment(BearyChatAttachment bearychatAttachment) {
+        this.attachments.add(bearychatAttachment);
     }
 
     public void removeAttachment(int index) {

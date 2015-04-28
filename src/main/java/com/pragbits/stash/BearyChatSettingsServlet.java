@@ -4,8 +4,8 @@ import com.atlassian.soy.renderer.SoyException;
 import com.atlassian.soy.renderer.SoyTemplateRenderer;
 import com.atlassian.stash.exception.AuthorisationException;
 import com.atlassian.stash.nav.NavBuilder;
-import com.pragbits.stash.SlackSettings;
-import com.pragbits.stash.SlackSettingsService;
+import com.pragbits.stash.BearyChatSettings;
+import com.pragbits.stash.BearyChatSettingsService;
 import com.pragbits.stash.PluginMetadata;
 import com.atlassian.stash.repository.Repository;
 import com.atlassian.stash.repository.RepositoryService;
@@ -22,9 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-public class SlackSettingsServlet extends HttpServlet {
+public class BearyChatSettingsServlet extends HttpServlet {
     private final PageBuilderService pageBuilderService;
-    private final SlackSettingsService slackSettingsService;
+    private final BearyChatSettingsService bearychatSettingsService;
     private final RepositoryService repositoryService;
     private final SoyTemplateRenderer soyTemplateRenderer;
     private final PermissionValidationService validationService;
@@ -32,14 +32,14 @@ public class SlackSettingsServlet extends HttpServlet {
     
     private Repository repository = null;
 
-    public SlackSettingsServlet(PageBuilderService pageBuilderService,
-                                    SlackSettingsService slackSettingsService,
+    public BearyChatSettingsServlet(PageBuilderService pageBuilderService,
+                                    BearyChatSettingsService bearychatSettingsService,
                                     RepositoryService repositoryService,
                                     SoyTemplateRenderer soyTemplateRenderer,
                                     PermissionValidationService validationService,
                                     I18nService i18nService) {
         this.pageBuilderService = pageBuilderService;
-        this.slackSettingsService = slackSettingsService;
+        this.bearychatSettingsService = bearychatSettingsService;
         this.repositoryService = repositoryService;
         this.soyTemplateRenderer = soyTemplateRenderer;
         this.validationService = validationService;
@@ -59,18 +59,18 @@ public class SlackSettingsServlet extends HttpServlet {
         }
 
         boolean enabled = false;
-        if (null != req.getParameter("slackNotificationsEnabled") && req.getParameter("slackNotificationsEnabled").equals("on")) {
+        if (null != req.getParameter("bearychatNotificationsEnabled") && req.getParameter("bearychatNotificationsEnabled").equals("on")) {
           enabled = true;
         }
 
         boolean enabledPush = false;
-        if (null != req.getParameter("slackNotificationsEnabledForPush") && req.getParameter("slackNotificationsEnabledForPush").equals("on")) {
+        if (null != req.getParameter("bearychatNotificationsEnabledForPush") && req.getParameter("bearychatNotificationsEnabledForPush").equals("on")) {
             enabledPush = true;
         }
 
-        String channel = req.getParameter("slackChannelName");
-        String webHookUrl = req.getParameter("slackWebHookUrl");
-        slackSettingsService.setSlackSettings(repository, new ImmutableSlackSettings(enabled, enabledPush, channel, webHookUrl));
+        String channel = req.getParameter("bearychatChannelName");
+        String webHookUrl = req.getParameter("bearychatWebHookUrl");
+        bearychatSettingsService.setBearyChatSettings(repository, new ImmutableBearyChatSettings(enabled, enabledPush, channel, webHookUrl));
 
         doGet(req, res);
     }
@@ -103,19 +103,19 @@ public class SlackSettingsServlet extends HttpServlet {
     private void doView(Repository repository, HttpServletResponse response)
             throws ServletException, IOException {
         validationService.validateForRepository(repository, Permission.REPO_ADMIN);
-        SlackSettings slackSettings = slackSettingsService.getSlackSettings(repository);
+        BearyChatSettings bearychatSettings = bearychatSettingsService.getBearyChatSettings(repository);
         render(response,
-                "stash.page.slack.settings.viewSlackSettings",
+                "stash.page.bearychat.settings.viewBearyChatSettings",
                 ImmutableMap.<String, Object>builder()
                         .put("repository", repository)
-                        .put("slackSettings", slackSettings)
+                        .put("bearychatSettings", bearychatSettings)
                         .build()
         );
     }
 
     private void render(HttpServletResponse response, String templateName, Map<String, Object> data)
             throws IOException, ServletException {
-        pageBuilderService.assembler().resources().requireContext("plugin.page.slack");
+        pageBuilderService.assembler().resources().requireContext("plugin.page.bearychat");
         response.setContentType("text/html;charset=UTF-8");
         try {
             soyTemplateRenderer.render(response.getWriter(), PluginMetadata.getCompleteModuleKey("soy-templates"), templateName, data);
