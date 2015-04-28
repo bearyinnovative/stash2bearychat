@@ -22,22 +22,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-public class SlackGlobalSettingsServlet extends HttpServlet {
-    static final String KEY_GLOBAL_SETTING_HOOK_URL = "stash2slack.globalsettings.hookurl";
+public class BearyChatGlobalSettingsServlet extends HttpServlet {
+    static final String KEY_GLOBAL_SETTING_HOOK_URL = "stash2bearychat.globalsettings.hookurl";
 
     private final PageBuilderService pageBuilderService;
-    private final SlackGlobalSettingsService slackGlobalSettingsService;
+    private final BearyChatGlobalSettingsService bearychatGlobalSettingsService;
     private final SoyTemplateRenderer soyTemplateRenderer;
     private final PermissionValidationService validationService;
     private final I18nService i18nService;
 
-    public SlackGlobalSettingsServlet(PageBuilderService pageBuilderService,
-                                      SlackGlobalSettingsService slackGlobalSettingsService,
+    public BearyChatGlobalSettingsServlet(PageBuilderService pageBuilderService,
+                                      BearyChatGlobalSettingsService bearychatGlobalSettingsService,
                                       SoyTemplateRenderer soyTemplateRenderer,
                                       PermissionValidationService validationService,
                                       I18nService i18nService) {
         this.pageBuilderService = pageBuilderService;
-        this.slackGlobalSettingsService = slackGlobalSettingsService;
+        this.bearychatGlobalSettingsService = bearychatGlobalSettingsService;
         this.soyTemplateRenderer = soyTemplateRenderer;
         this.validationService = validationService;
         this.i18nService = i18nService;
@@ -56,9 +56,9 @@ public class SlackGlobalSettingsServlet extends HttpServlet {
             return;
         }
 
-        String globalWebHookUrl = req.getParameter("slackGlobalWebHookUrl");
+        String globalWebHookUrl = req.getParameter("bearychatGlobalWebHookUrl");
         if (null != globalWebHookUrl) {
-            slackGlobalSettingsService.setWebHookUrl(KEY_GLOBAL_SETTING_HOOK_URL, globalWebHookUrl);
+            bearychatGlobalSettingsService.setWebHookUrl(KEY_GLOBAL_SETTING_HOOK_URL, globalWebHookUrl);
         }
 
         doGet(req, res);
@@ -76,22 +76,22 @@ public class SlackGlobalSettingsServlet extends HttpServlet {
 
         validationService.validateForGlobal(Permission.ADMIN);
 
-        String webHookUrl = slackGlobalSettingsService.getWebHookUrl(KEY_GLOBAL_SETTING_HOOK_URL);
+        String webHookUrl = bearychatGlobalSettingsService.getWebHookUrl(KEY_GLOBAL_SETTING_HOOK_URL);
         if (null == webHookUrl || webHookUrl.equals("")) {
             webHookUrl = "";
         }
 
         render(response,
-                "stash.page.slack.global.settings.viewGlobalSlackSettings",
+                "stash.page.bearychat.global.settings.viewGlobalBearyChatSettings",
                 ImmutableMap.<String, Object>builder()
-                        .put("slackGlobalWebHookUrl", webHookUrl)
+                        .put("bearychatGlobalWebHookUrl", webHookUrl)
                         .build()
         );
     }
 
     private void render(HttpServletResponse response, String templateName, Map<String, Object> data)
             throws IOException, ServletException {
-        pageBuilderService.assembler().resources().requireContext("plugin.adminpage.slack");
+        pageBuilderService.assembler().resources().requireContext("plugin.adminpage.bearychat");
         response.setContentType("text/html;charset=UTF-8");
         try {
             soyTemplateRenderer.render(response.getWriter(), PluginMetadata.getCompleteModuleKey("soy-templates"), templateName, data);

@@ -1,6 +1,6 @@
 package com.pragbits.stash;
 
-public interface SlackGlobalSettingsService {
+public interface BearyChatGlobalSettingsService {
     String getWebHookUrl(String key);
     void setWebHookUrl(String key, String value);
 }

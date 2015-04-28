@@ -3,14 +3,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.pragbits.stash</groupId>
-    <artifactId>stash2slack</artifactId>
+    <artifactId>stash2bearychat</artifactId>
     <version>1.2</version>
     <organization>
         <name>Pragmatic Bits</name>
         <url>http://blog.pragbits.com/</url>
     </organization>
-    <name>Slack notifications for pull request and push activities</name>
-    <description>Sends pull request activity and git push notifications to slack</description>
+    <name>BearyChat notifications for pull request and push activities</name>
+    <description>Sends pull request activity and git push notifications to BearyChat</description>
     <packaging>atlassian-plugin</packaging>
     <dependencyManagement>
         <dependencies>
