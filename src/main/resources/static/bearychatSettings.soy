@@ -34,12 +34,14 @@
                     {param checked: $bearychatSettings.bearychatNotificationsEnabledForPush /}
                     {param description: stash_i18n('stash.web.bearychat.settings.bearychat.push.enabled.description', 'If enabled, users will receive bearychat notifications about push activities') /}
                 {/call}
+                <div style="display:none">
                 {call widget.aui.form.text}
                     {param id: 'bearychatChannelName' /}
                     {param labelContent: stash_i18n('stash.web.bearychat.settings.bearychat.channel', 'Channel name') /}
                     {param initialValue: $bearychatSettings.bearychatChannelName /}
                     {param description: stash_i18n('stash.web.bearychat.settings.bearychat.channel.description', 'BearyChat channel to use. If empty, #general will be used') /}
                 {/call}
+                </div>
                 {call widget.aui.form.text}
                     {param id: 'bearychatWebHookUrl' /}
                     {param labelContent: stash_i18n('stash.web.bearychat.settings.bearychat.webhookurl', 'Webhook Url') /}
