@@ -76,6 +76,10 @@ public class PullRequestActivityListener {
                     activity,
                     userName,
                     url);
+            String fallback = String.format("Pull request event: `%s`, activity: `%s` by `%s`.",
+                    event.getPullRequest().getTitle(),
+                    activity,
+                    userName);
 
             BearyChatPayload payload = new BearyChatPayload();
             if (!bearychatSettings.getBearyChatChannelName().isEmpty()) {
@@ -85,7 +89,7 @@ public class PullRequestActivityListener {
             //payload.setMrkdwn(true);
 
             BearyChatAttachment attachment = new BearyChatAttachment();
-            //attachment.setFallback(text);
+            attachment.setFallback(fallback);
             //attachment.setPretext(String.format(""));
             //attachment.setColor("#aabbcc");
 
@@ -131,7 +135,7 @@ public class PullRequestActivityListener {
 
             field.setShort(false);
             attachment.addField(field);
-            payload.addAttachment(attachment);
+            //payload.addAttachment(attachment);
             String jsonPayload = gson.toJson(payload);
 
             bearychatNotifier.SendBearyChatNotification(hookSelector.getSelectedHook(), jsonPayload);
