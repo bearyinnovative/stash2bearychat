@@ -71,7 +71,7 @@ public class PullRequestActivityListener {
                     .overview()
                     .buildAbsolute();
 
-            String text = String.format("Pull request event: `%s`, activity: `%s` by `%s`. <%s|See details>",
+            String text = String.format("Pull request event: `%s`, activity: `%s` by `%s`. [See details](%s)",
                     event.getPullRequest().getTitle(),
                     activity,
                     userName,
