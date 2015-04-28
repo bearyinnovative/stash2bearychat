@@ -116,7 +116,7 @@ public class RepositoryPushActivityListener {
 
                 for (Changeset ch : myChanges) {
                     BearyChatAttachment attachment = new BearyChatAttachment();
-                    attachment.setFallback(text);
+                    //attachment.setFallback(text);
                     attachment.setColor("#aabbcc");
                     BearyChatAttachmentField field = new BearyChatAttachmentField();
 

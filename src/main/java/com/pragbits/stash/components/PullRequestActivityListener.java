@@ -82,12 +82,12 @@ public class PullRequestActivityListener {
                 payload.setChannel(bearychatSettings.getBearyChatChannelName());
             }
             payload.setText(text);
-            payload.setMrkdwn(true);
+            //payload.setMrkdwn(true);
 
             BearyChatAttachment attachment = new BearyChatAttachment();
-            attachment.setFallback(text);
+            //attachment.setFallback(text);
             //attachment.setPretext(String.format(""));
-            attachment.setColor("#aabbcc");
+            //attachment.setColor("#aabbcc");
 
             BearyChatAttachmentField field = new BearyChatAttachmentField();
             field.setTitle("Event details");
@@ -95,31 +95,31 @@ public class PullRequestActivityListener {
             switch (event.getActivity().getAction()) {
                 case OPENED:
                     field.setValue(String.format("*%s* OPENED the pull request: `%s`", userName,  event.getPullRequest().getTitle()));
-                    attachment.setColor("#2267c4"); // blue
+                    //attachment.setColor("#2267c4"); // blue
                     break;
                 case DECLINED:
                     field.setValue(String.format("*%s* DECLINED the pull request", userName));
-                    attachment.setColor("#ff0024"); // red
+                    //attachment.setColor("#ff0024"); // red
                     break;
                 case APPROVED:
                     field.setValue(String.format("*%s* APPROVED the pull request", userName));
-                    attachment.setColor("#2dc422"); // green
+                    //attachment.setColor("#2dc422"); // green
                     break;
                 case MERGED:
                     field.setValue(String.format("*%s* MERGED the pull request", userName));
-                    attachment.setColor("#2dc422"); // green
+                    //attachment.setColor("#2dc422"); // green
                     break;
                 case REOPENED:
                     field.setValue(String.format("*%s* REOPENED the pull request", userName));
-                    attachment.setColor("#2267c4"); // blue
+                    //attachment.setColor("#2267c4"); // blue
                     break;
                 case RESCOPED:
                     field.setValue(String.format("*%s* RESCOPED the pull request", userName));
-                    attachment.setColor("#9055fc"); // purple
+                    //attachment.setColor("#9055fc"); // purple
                     break;
                 case UNAPPROVED:
                     field.setValue(String.format("*%s* UNAPPROVED the pull request", userName));
-                    attachment.setColor("#ff0024"); // red
+                    //attachment.setColor("#ff0024"); // red
                     break;
             }
 
