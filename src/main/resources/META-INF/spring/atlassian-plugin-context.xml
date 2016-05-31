@@ -5,21 +5,21 @@
                            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
     <bean id="bearychatSettingsService"
-          class="com.pragbits.stash.DefaultBearyChatSettingsService">
+          class="com.pragbits.bitbucketserver.DefaultBearyChatSettingsService">
         <constructor-arg index="0" ref="pluginSettingsFactory"/>
         <constructor-arg index="1" ref="permissionValidationService"/>
     </bean>
 
     <bean id="bearychatGlobalSettingsService"
-          class="com.pragbits.stash.DefaultGlobalBearyChatSettingsService">
+          class="com.pragbits.bitbucketserver.DefaultGlobalBearyChatSettingsService">
         <constructor-arg index="0" ref="pluginSettingsFactory"/>
     </bean>
 
-    <bean id="bearychatNotifier" class="com.pragbits.stash.tools.BearyChatNotifier">
+    <bean id="bearychatNotifier" class="com.pragbits.bitbucketserver.tools.BearyChatNotifier">
     </bean>
 
     <bean id="pullRequestActivityListener"
-          class="com.pragbits.stash.components.PullRequestActivityListener">
+          class="com.pragbits.bitbucketserver.components.PullRequestActivityListener">
         <constructor-arg index="0" ref="bearychatGlobalSettingsService" />
         <constructor-arg index="1" ref="bearychatSettingsService" />
         <constructor-arg index="2" ref="navBuilder" />
@@ -27,7 +27,7 @@
     </bean>
     
     <bean id="repositoryPushActivityListener"
-          class="com.pragbits.stash.components.RepositoryPushActivityListener">
+          class="com.pragbits.bitbucketserver.components.RepositoryPushActivityListener">
         <constructor-arg index="0" ref="bearychatGlobalSettingsService" />
         <constructor-arg index="1" ref="bearychatSettingsService" />
         <constructor-arg index="2" ref="commitService" />

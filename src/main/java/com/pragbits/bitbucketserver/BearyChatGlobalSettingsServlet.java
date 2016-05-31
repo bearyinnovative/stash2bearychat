@@ -1,18 +1,12 @@
-package com.pragbits.stash;
+package com.pragbits.bitbucketserver;
 
-import com.atlassian.sal.api.pluginsettings.PluginSettings;
-import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import com.atlassian.soy.renderer.SoyException;
 import com.atlassian.soy.renderer.SoyTemplateRenderer;
-import com.atlassian.stash.exception.AuthorisationException;
-import com.atlassian.stash.nav.NavBuilder;
-import com.pragbits.stash.PluginMetadata;
-import com.atlassian.stash.repository.Repository;
-import com.atlassian.stash.repository.RepositoryService;
-import com.atlassian.stash.user.Permission;
-import com.atlassian.stash.user.PermissionValidationService;
+import com.atlassian.bitbucket.AuthorisationException;
+import com.atlassian.bitbucket.permission.Permission;
+import com.atlassian.bitbucket.permission.PermissionValidationService;
 import com.atlassian.webresource.api.assembler.PageBuilderService;
-import com.atlassian.stash.i18n.I18nService;
+import com.atlassian.bitbucket.i18n.I18nService;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import javax.servlet.ServletException;
@@ -82,7 +76,7 @@ public class BearyChatGlobalSettingsServlet extends HttpServlet {
         }
 
         render(response,
-                "stash.page.bearychat.global.settings.viewGlobalBearyChatSettings",
+                "bitbucketserver.page.bearychat.global.settings.viewGlobalBearyChatSettings",
                 ImmutableMap.<String, Object>builder()
                         .put("bearychatGlobalWebHookUrl", webHookUrl)
                         .build()

@@ -1,18 +1,17 @@
-package com.pragbits.stash;
+package com.pragbits.bitbucketserver;
 
 import com.atlassian.soy.renderer.SoyException;
 import com.atlassian.soy.renderer.SoyTemplateRenderer;
-import com.atlassian.stash.exception.AuthorisationException;
-import com.atlassian.stash.nav.NavBuilder;
-import com.pragbits.stash.BearyChatSettings;
-import com.pragbits.stash.BearyChatSettingsService;
-import com.pragbits.stash.PluginMetadata;
-import com.atlassian.stash.repository.Repository;
-import com.atlassian.stash.repository.RepositoryService;
-import com.atlassian.stash.user.Permission;
-import com.atlassian.stash.user.PermissionValidationService;
+import com.atlassian.bitbucket.AuthorisationException;
+import com.pragbits.bitbucketserver.BearyChatSettings;
+import com.pragbits.bitbucketserver.BearyChatSettingsService;
+import com.pragbits.bitbucketserver.PluginMetadata;
+import com.atlassian.bitbucket.repository.Repository;
+import com.atlassian.bitbucket.repository.RepositoryService;
+import com.atlassian.bitbucket.permission.Permission;
+import com.atlassian.bitbucket.permission.PermissionValidationService;
 import com.atlassian.webresource.api.assembler.PageBuilderService;
-import com.atlassian.stash.i18n.I18nService;
+import com.atlassian.bitbucket.i18n.I18nService;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import javax.servlet.ServletException;
@@ -21,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BearyChatSettingsServlet extends HttpServlet {
     private final PageBuilderService pageBuilderService;
@@ -29,6 +30,7 @@ public class BearyChatSettingsServlet extends HttpServlet {
     private final SoyTemplateRenderer soyTemplateRenderer;
     private final PermissionValidationService validationService;
     private final I18nService i18nService;
+    private static final Logger log = LoggerFactory.getLogger(BearyChatSettingsServlet.class);
     
     private Repository repository = null;
 
@@ -71,7 +73,7 @@ public class BearyChatSettingsServlet extends HttpServlet {
         String channel = req.getParameter("bearychatChannelName");
         String webHookUrl = req.getParameter("bearychatWebHookUrl");
         bearychatSettingsService.setBearyChatSettings(repository, new ImmutableBearyChatSettings(enabled, enabledPush, channel, webHookUrl));
-
+        
         doGet(req, res);
     }
 
@@ -84,12 +86,12 @@ public class BearyChatSettingsServlet extends HttpServlet {
             return;
         }
         String[] pathParts = pathInfo.substring(1).split("/");
-        if (pathParts.length != 2) {
+        if (pathParts.length != 4) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        String projectKey = pathParts[0];
-        String repoSlug = pathParts[1];
+        String projectKey = pathParts[1];
+        String repoSlug = pathParts[3];
         
         this.repository = repositoryService.getBySlug(projectKey, repoSlug);
         if (repository == null) {
@@ -105,10 +107,14 @@ public class BearyChatSettingsServlet extends HttpServlet {
         validationService.validateForRepository(repository, Permission.REPO_ADMIN);
         BearyChatSettings bearychatSettings = bearychatSettingsService.getBearyChatSettings(repository);
         render(response,
-                "stash.page.bearychat.settings.viewBearyChatSettings",
+                "bitbucketserver.page.bearychat.settings.viewBearyChatSettings",
                 ImmutableMap.<String, Object>builder()
                         .put("repository", repository)
                         .put("bearychatSettings", bearychatSettings)
+                        .put("bearychatSettingsEnabled", bearychatSettings.isBearyChatNotificationsEnabled())
+                        .put("bearychatSettingsPushEnabled", bearychatSettings.isBearyChatNotificationsEnabledForPush())
+                        .put("bearychatSettingsChannelName", bearychatSettings.getBearyChatChannelName())
+                        .put("bearychatSettingsWebhookUrl", bearychatSettings.getBearyChatWebHookUrl())
                         .build()
         );
     }
