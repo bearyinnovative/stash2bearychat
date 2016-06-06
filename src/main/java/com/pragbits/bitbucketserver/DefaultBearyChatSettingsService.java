@@ -1,16 +1,16 @@
-package com.pragbits.stash;
+package com.pragbits.bitbucketserver;
 
 import com.atlassian.sal.api.pluginsettings.PluginSettings;
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
-import com.pragbits.stash.BearyChatSettings;
-import com.pragbits.stash.BearyChatSettingsService;
-import com.atlassian.stash.repository.Repository;
-import com.atlassian.stash.user.Permission;
-import com.atlassian.stash.user.PermissionValidationService;
+import com.pragbits.bitbucketserver.BearyChatSettings;
+import com.pragbits.bitbucketserver.BearyChatSettingsService;
+import com.atlassian.bitbucket.repository.Repository;
+import com.atlassian.bitbucket.permission.Permission;
+import com.atlassian.bitbucket.permission.PermissionValidationService;
 import com.google.common.base.Throwables;
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
 
 import javax.annotation.Nonnull;
@@ -31,7 +31,7 @@ public class DefaultBearyChatSettingsService implements BearyChatSettingsService
     private final PluginSettings pluginSettings;
     private final PermissionValidationService validationService;
 
-    private final Cache<Integer, BearyChatSettings> cache = CacheBuilder.newBuilder().build(
+    private final LoadingCache<Integer, BearyChatSettings> cache = CacheBuilder.newBuilder().build(
             new CacheLoader<Integer, BearyChatSettings>() {
                 @Override
                 public BearyChatSettings load(@Nonnull Integer repositoryId) {
@@ -44,7 +44,7 @@ public class DefaultBearyChatSettingsService implements BearyChatSettingsService
 
     public DefaultBearyChatSettingsService(PluginSettingsFactory pluginSettingsFactory, PermissionValidationService validationService) {
         this.validationService = validationService;
-        this.pluginSettings = pluginSettingsFactory.createSettingsForKey(PluginMetadata.getPluginKey());
+        this.pluginSettings = pluginSettingsFactory.createSettingsForKey("com.pragbits.stash.stash2bearychat");
     }
 
     @Nonnull

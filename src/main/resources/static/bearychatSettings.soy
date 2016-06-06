@@ -1,22 +1,25 @@
-{namespace stash.page.bearychat.settings}
+{namespace bitbucketserver.page.bearychat.settings}
 
 /**
  * @param repository
- * @param bearychatSettings
+ * @param bearychatSettingsEnabled
+ * @param bearychatSettingsPushEnabled
+ * @param bearychatSettingsChannelName
+ * @param bearychatSettingsWebhookUrl
  **/
 {template .viewBearyChatSettings}
 <html>
     <head>
-        <meta name="decorator" content="stash.repository.settings">
+        <meta name="decorator" content="bitbucket.repository.settings">
         <meta name="projectKey" content="{$repository.project.key}">
         <meta name="repositorySlug" content="{$repository.slug}">
         <meta name="activeTab" content="repository-settings-bearychat-settings">
-        <title>{{stash_i18n('stash.web.bearychat.settings.title', 'BearyChat settings for {0} / {1}', $repository.project.name, $repository.name)}}</title>
+        <title>{{getText('stash.web.bearychat.settings.title', $repository.project.name, $repository.name)}}</title>
     </head>
     <body>
         {call widget.aui.pageHeader}
             {param content}
-                <h2>{stash_i18n('stash.web.bearychat.settings.heading', 'BearyChat settings')}</h2>
+                <h2>{getText('stash.web.bearychat.settings.heading')}</h2>
             {/param}
         {/call}
         {call widget.aui.form.form}
@@ -24,35 +27,35 @@
             {param content}
                 {call widget.aui.form.checkbox}
                     {param id: 'bearychatNotificationsEnabled' /}
-                    {param labelContent: stash_i18n('stash.web.bearychat.settings.bearychat.enabled.label', 'Enable bearychat notifications for pull requests') /}
-                    {param checked: $bearychatSettings.bearychatNotificationsEnabled /}
-                    {param description: stash_i18n('stash.web.bearychat.settings.bearychat.enabled.description', 'If enabled, users will receive bearychat notifications about pull request activities') /}
+                    {param labelContent: getText('stash.web.bearychat.settings.bearychat.enabled.label') /}
+                    {param checked: $bearychatSettingsEnabled /}
+                    {param description: getText('stash.web.bearychat.settings.bearychat.enabled.description') /}
                 {/call}
                 {call widget.aui.form.checkbox}
                     {param id: 'bearychatNotificationsEnabledForPush' /}
-                    {param labelContent: stash_i18n('stash.web.bearychat.settings.bearychat.push.enabled.label', 'Enable bearychat notifications for push') /}
-                    {param checked: $bearychatSettings.bearychatNotificationsEnabledForPush /}
-                    {param description: stash_i18n('stash.web.bearychat.settings.bearychat.push.enabled.description', 'If enabled, users will receive bearychat notifications about push activities') /}
+                    {param labelContent: getText('stash.web.bearychat.settings.bearychat.push.enabled.label') /}
+                    {param checked: $bearychatSettingsPushEnabled /}
+                    {param description: getText('stash.web.bearychat.settings.bearychat.push.enabled.description') /}
                 {/call}
                 <div style="display:none">
                 {call widget.aui.form.text}
                     {param id: 'bearychatChannelName' /}
-                    {param labelContent: stash_i18n('stash.web.bearychat.settings.bearychat.channel', 'Channel name') /}
-                    {param initialValue: $bearychatSettings.bearychatChannelName /}
-                    {param description: stash_i18n('stash.web.bearychat.settings.bearychat.channel.description', 'BearyChat channel to use. If empty, #general will be used') /}
+                    {param labelContent: getText('stash.web.bearychat.settings.bearychat.channel') /}
+                    {param initialValue: $bearychatSettingsChannelName /}
+                    {param description: getText('stash.web.bearychat.settings.bearychat.channel.description') /}
                 {/call}
                 </div>
                 {call widget.aui.form.text}
                     {param id: 'bearychatWebHookUrl' /}
-                    {param labelContent: stash_i18n('stash.web.bearychat.settings.bearychat.webhookurl', 'Webhook Url') /}
-                    {param initialValue: $bearychatSettings.bearychatWebHookUrl /}
-                    {param description: stash_i18n('stash.web.bearychat.settings.bearychat.webhookurl.description', 'BearyChat webhook url. Overrides global setting, if nonempty. Useful when you want to post to a different team using a different hook') /}
+                    {param labelContent: getText('stash.web.bearychat.settings.bearychat.webhookurl') /}
+                    {param initialValue: $bearychatSettingsWebhookUrl /}
+                    {param description: getText('stash.web.bearychat.settings.bearychat.webhookurl.description') /}
                 {/call}
                 {call aui.form.buttons}
                     {param content}
                         {call aui.form.submit}
                             {param id: 'stash.web.bearychat.settings.submit' /}
-                            {param text: stash_i18n('stash.web.bearychat.settings.submit', 'Save') /}
+                            {param text: getText('stash.web.bearychat.settings.submit') /}
                             {param type: 'submit' /}
                         {/call}
                     {/param}

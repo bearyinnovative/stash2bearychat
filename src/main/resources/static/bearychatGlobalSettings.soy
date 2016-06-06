@@ -1,4 +1,4 @@
-{namespace stash.page.bearychat.global.settings}
+{namespace bitbucketserver.page.bearychat.global.settings}
 
 /**
  * @param bearychatGlobalWebHookUrl
@@ -13,7 +13,7 @@
     <body>
         {call widget.aui.pageHeader}
             {param content}
-                <h2>{stash_i18n('stash.web.bearychat.global.settings.heading', 'Global BearyChat settings')}</h2>
+                <h2>{getText('stash.web.bearychat.global.settings.heading')}</h2>
             {/param}
         {/call}
         {call widget.aui.form.form}
@@ -21,15 +21,15 @@
             {param content}
                 {call widget.aui.form.text}
                     {param id: 'bearychatGlobalWebHookUrl' /}
-                    {param labelContent: stash_i18n('stash.web.bearychat.global.settings.bearychat.webhookurl', 'Webhook url') /}
+                    {param labelContent: getText('stash.web.bearychat.global.settings.bearychat.webhookurl') /}
                     {param initialValue: $bearychatGlobalWebHookUrl /}
-                    {param description: stash_i18n('stash.web.bearychat.global.settings.bearychat.channel.description', 'BearyChat webhook url to use. This can be overriden for each repository at the repo bearychat settings page, if desired') /}
+                    {param description: getText('stash.web.bearychat.global.settings.bearychat.channel.description') /}
                 {/call}
                 {call aui.form.buttons}
                     {param content}
                         {call aui.form.submit}
                             {param id: 'stash.web.bearychat.global.settings.submit' /}
-                            {param text: stash_i18n('stash.web.bearychat.global.settings.submit', 'Save') /}
+                            {param text: getText('stash.web.bearychat.global.settings.submit') /}
                             {param type: 'submit' /}
                         {/call}
                     {/param}

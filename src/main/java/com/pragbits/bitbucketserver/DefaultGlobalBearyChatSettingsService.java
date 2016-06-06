@@ -1,4 +1,4 @@
-package com.pragbits.stash;
+package com.pragbits.bitbucketserver;
 
 
 import com.atlassian.sal.api.pluginsettings.PluginSettings;

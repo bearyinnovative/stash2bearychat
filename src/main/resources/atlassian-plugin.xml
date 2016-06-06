@@ -17,36 +17,38 @@
     <context>slash2stack</context>
   </web-resource>
   
-  <component key="pull-request-activity-listener" class="com.pragbits.stash.components.PullRequestActivityListener">
+  <component key="pull-request-activity-listener" class="com.pragbits.bitbucketserver.components.PullRequestActivityListener">
   </component>
 
-  <component key="push-activity-listener" class="com.pragbits.stash.components.RepositoryPushActivityListener">
+  <component key="push-activity-listener" class="com.pragbits.bitbucketserver.components.RepositoryPushActivityListener">
   </component>
   
-  <stash-resource key="soy-templates">
+  <resource type="i18n" name="i18n" location="i18n/stash2bearychat"/>
+  
+  <client-resource key="soy-templates">
    <directory location="/static/">
     <include>/**/*.soy</include>
    </directory>
-   <dependency>com.atlassian.stash.stash-web-plugin:server-soy-templates</dependency>
-  </stash-resource>
+   <dependency>com.atlassian.bitbucket.server.bitbucket-web:server-soy-templates</dependency>
+  </client-resource>
 
-  <web-item key="repository-settings-bearychat-settings" weight="30" section="stash.repository.settings.panel/repository-settings-addons-section">
-   <label key="stash.web.repository.settings.tab.bearychat.settings">BearyChat settings</label>
-   <tooltip key="stash.web.repository.settings.tab.bearychat.settings.tooltip">Configure whether you want bearychat notifications</tooltip>
-   <link>${navBuilder.pluginServlets().path('bearychat-settings', $project.key, $repository.slug).buildRelNoContext()}</link>
+  <web-item key="repository-settings-bearychat-settings" weight="30" section="bitbucket.repository.settings.panel/repository-settings-addons-section">
+   <label key="bitbucket.web.repository.settings.tab.bearychat.settings">BearyChat settings</label>
+   <tooltip key="bitbucket.web.repository.settings.tab.bearychat.settings.tooltip">Configure whether you want bearychat notifications</tooltip>
+   <link>${navBuilder.pluginServlets().path('bearychat-settings', 'projects', $project.key, 'repos', $repository.slug).buildRelNoContext()}</link>
   </web-item>
 
   <web-item key="global-settings-bearychat-settings" weight="30" section="atl.admin/admin-settings-section">
-   <label key="stash.web.admin.settings.tab.bearychat.admin.settings">Stash 2 BearyChat settings</label>
-   <tooltip key="stash.web.admin.settings.tab.bearychat.admin.settings.tooltip">Configure global settings for bearychat notifications</tooltip>
+   <label key="bitbucket.web.admin.settings.tab.bearychat.admin.settings">Bitbucket Server 2 BearyChat settings</label>
+   <tooltip key="bitbucket.web.admin.settings.tab.bearychat.admin.settings.tooltip">Configure global settings for bearychat notifications</tooltip>
    <link>/plugins/servlet/bearychat-global-settings/admin</link>
   </web-item>
 
-  <servlet key="bearychat-settings-servlet" class="com.pragbits.stash.BearyChatSettingsServlet">
+  <servlet key="bearychat-settings-servlet" class="com.pragbits.bitbucketserver.BearyChatSettingsServlet">
    <url-pattern>/bearychat-settings/*</url-pattern>
   </servlet>
 
-  <servlet key="bearychat-global-settings-servlet" class="com.pragbits.stash.BearyChatGlobalSettingsServlet">
+  <servlet key="bearychat-global-settings-servlet" class="com.pragbits.bitbucketserver.BearyChatGlobalSettingsServlet">
    <url-pattern>/bearychat-global-settings/admin</url-pattern>
   </servlet>
 
